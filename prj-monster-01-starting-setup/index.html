@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Basics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Monster Slayer</h1>
+    </header>
+    <div id="game">
+      <section id="monster" class="container">
+        <h2>Monster Health</h2>
+        <div class="healthbar">
+          <div class="healthbar__value" :style="monsterHealthStyle"></div>
+        </div>
+      </section>
+      <section id="player" class="container">
+        <h2>Your Health</h2>
+        <div class="healthbar">
+          <div class="healthbar__value" :style="playerHealthStyle"></div>
+        </div>
+      </section>
+      <section v-if="!!matchResult" class="container">
+        <h2>Game Over!</h2>
+        <h3 v-if="matchResult === 'won'">You Won!</h3>
+        <h3 v-else-if="matchResult ==='lost'">You Lost!</h3>
+        <h3 v-else>It's a draw!</h3>
+        <button @click="startNewGame">START NEW GAME</button>
+      </section>
+      <section id="controls" v-else>
+        <button @click="attackMonster">ATTACK</button>
+        <button :disabled="canUseSpecialAttack" @click="specialAttackMonster">
+          SPECIAL ATTACK
+        </button>
+        <button :disabled="!canUseHeal" @click="healPlayer">HEAL</button>
+        <button @click="playerSurrender">SURRENDER</button>
+      </section>
+      <section id="log" class="container">
+        <h2>Battle Log</h2>
+        <ul>
+          <li v-for="log in battleLogs" :key="log">
+            <span
+              :class="{'log--player': isPlayer(log.who), 'log--monster': isMonster(log.who)}"
+            >
+              {{ getActionMaker(log.who) }}
+            </span>
+            <span
+              :class="{'log--attack': isAttackAction(log.what), 'log--heal': isHealAction(log.what)}"
+            >
+              {{ getActionDescription(log.what) }}
+            </span>
+            <span
+              :class="{'log--attack': isAttackAction(log.what), 'log--heal': isHealAction(log.what)}"
+            >
+              {{log.value}}
+            </span>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
