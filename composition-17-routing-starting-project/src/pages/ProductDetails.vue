@@ -11,7 +11,7 @@ import { inject, computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 export default {
-  props: ['pid'],
+  // props: ['pid'],
   // setup(props) {
   setup() {
     const products = inject('products');
